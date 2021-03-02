@@ -3,7 +3,8 @@
 A manifest repo acting as a tenant within [flux-demo-branch-admin](https://github.com/janakerman/flux-demo-branch-admin).
 
 Downsides:
-* Merging to a test branch
+* All services in this repo are release together. It's not possible for a 
+* Promoting a service to test
 
 ## Adding a new service
 
@@ -21,7 +22,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: $SERVICE
-  namespace: apps
+  namespace: branch
 spec:
   releaseName: $SERVICE
   chart:
@@ -31,7 +32,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: $SERVICE
-        namespace: apps
+        namespace: branch
   interval: 5m
   install:
     remediation:
@@ -53,7 +54,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: $SERVICE
-  namespace: apps
+  namespace: branch
 spec:
   interval: 5m
   url: https://stefanprodan.github.io/podinfo
@@ -62,7 +63,7 @@ EOF
 cat << EOF > environments/base/$SERVICE/kustomization.yaml 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: apps
+namespace: branch
 resources:
   - release.yaml
   - repository.yaml
@@ -82,7 +83,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: $SERVICE
-  namespace: apps
+  namespace: branch
 spec:
   values:
     ingress:
@@ -93,7 +94,7 @@ EOF
 cat << EOF > environments/$ENV/$SERVICE/repository.yaml 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: apps
+namespace: branch
 resources:
   - ../../base/$SERVICE
 patchesStrategicMerge:
@@ -114,7 +115,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: $SERVICE
-  namespace: apps
+  namespace: branch
 spec:
   values:
     ingress:
@@ -125,7 +126,7 @@ EOF
 cat << EOF > environments/$ENV/$SERVICE/repository.yaml 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: apps
+namespace: branch
 resources:
   - ../../base/$SERVICE
 patchesStrategicMerge:
