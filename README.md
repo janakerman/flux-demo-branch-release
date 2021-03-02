@@ -3,7 +3,7 @@
 A manifest repo acting as a tenant within [flux-demo-branch-admin](https://github.com/janakerman/flux-demo-branch-admin).
 
 Downsides:
-* Merging to a branch
+* Merging to a test branch
 
 ## Adding a new service
 
