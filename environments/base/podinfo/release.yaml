@@ -22,7 +22,15 @@ spec:
   values:
     cache: redis-master.redis:6379
     ingress:
+      hosts:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: nginx
       path: "/"
+  valuesFrom:
+    - kind: ConfigMap
+      name: stack-values
+      valuesKey: stack-values
+    - kind: ConfigMap
+      name: podinfo-values
+      valuesKey: podinfo-values
