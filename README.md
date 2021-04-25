@@ -14,7 +14,7 @@ Create the base manifests.
 
 ```
 SERVICE=foo
-
+   
 mkdir -p environments/base/$SERVICE/
 
 cat << EOF > environments/base/$SERVICE/release.yaml 
